@@ -2,7 +2,7 @@
 
 <div align="center">
 
-## A streamlined autoloader framework for Y2JB-based payload execution workflows
+## A streamlined autoloader for Y2JB
 
 Built by **LZ**
 
