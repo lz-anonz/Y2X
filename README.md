@@ -12,7 +12,7 @@ It provides a structured workflow for chaining and managing exploit-stage payloa
 
 ## Features
 
-- Clean autoloader execution structure for Y2JB environments  
+- Y2JB Autoloader/Updater Included  
 - Support for **Lapse Kernel Exploit**
 - Support for **P2JB Kernel Exploit**  
 
@@ -20,7 +20,7 @@ It provides a structured workflow for chaining and managing exploit-stage payloa
 
 ## Screenshots
 
-![Main UI](screenshots/main.png)
+![Main UI](screenshots/main.jpg)
 
 ---
 
@@ -46,10 +46,10 @@ This project builds on the foundational work and research contributions from man
   Creator of the Y2JB framework and foundational Lapse ecosystem work
 
 - **itsPLK**  
-  Contributions to autoloader concepts and payload workflow structuring
+  Contributions to autoloader ui concepts and payload structuring
 
-- **abc / psfree contributors**  
-  Research and development work related to Lapse and exploit chain improvements
+- **Owendswang**  
+  Contributions to Y2JB & Autoloader
 
 - **TheFlow**  
   Low-level vulnerability research that enabled modern exploit development
