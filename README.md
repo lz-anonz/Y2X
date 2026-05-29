@@ -12,7 +12,7 @@ It provides a structured workflow for chaining and managing exploit-stage payloa
 
 ## Features
 
-- Clean autoloader execution structure for Y2JB environments  
+- Y2JB Autoloader Included  
 - Support for **Lapse Kernel Exploit**
 - Support for **P2JB Kernel Exploit**  
 
