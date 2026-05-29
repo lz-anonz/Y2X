@@ -1,13 +1,5 @@
 # Y2eXploit (Y2X)
 
-<div align="center">
-
-## A streamlined autoloader for Y2JB
-
-Built by **LZ**
-
-</div>
-
 ---
 
 ## Overview
