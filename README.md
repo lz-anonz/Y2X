@@ -20,7 +20,7 @@ It provides a structured workflow for chaining and managing exploit-stage payloa
 
 ## Screenshots
 
-![Main UI](screenshots/main.png)
+![Main UI](screenshots/main.jpg)
 
 ---
 
