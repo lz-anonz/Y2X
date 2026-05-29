@@ -46,10 +46,10 @@ This project builds on the foundational work and research contributions from man
   Creator of the Y2JB framework and foundational Lapse ecosystem work
 
 - **itsPLK**  
-  Contributions to autoloader ui concepts and payload workflow structuring
+  Contributions to autoloader ui concepts and payload structuring
 
 - **Owendswang**  
-  Contributions to autoloader
+  Contributions to Y2JB & Autoloader
 
 - **TheFlow**  
   Low-level vulnerability research that enabled modern exploit development
