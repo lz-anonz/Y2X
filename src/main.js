@@ -103,6 +103,26 @@ async function log(msg) {
             });
         } catch (e) { }
     }
+
+    if (_log_socket_fd !== null && typeof syscall !== 'undefined') {
+        try {
+            if (!_log_socket_buf) {
+                _log_socket_buf = malloc(_LOG_SOCKET_MAXLEN);
+            }
+            const line = message + '\n';
+            const len = Math.min(line.length, _LOG_SOCKET_MAXLEN);
+            for (let i = 0; i < len; i++) {
+                write8(_log_socket_buf + BigInt(i), line.charCodeAt(i) & 0xFF);
+            }
+            let sent = 0;
+            while (sent < len) {
+                const n = syscall(SYSCALL.write, _log_socket_fd, _log_socket_buf + BigInt(sent), BigInt(len - sent));
+                const nv = Number(n);
+                if (nv <= 0) break;
+                sent += nv;
+            }
+        } catch (e) { }
+    }
 }
 
 function toHex(num) {
@@ -138,7 +158,6 @@ function trigger() {
             return await original_log(msg);
         }
     };
-
 
     window.autoloader_ui = function() {
         if (document.getElementById("autoloader_ui")) {
@@ -274,18 +293,6 @@ function trigger() {
         bottom.style.boxSizing = "border-box";
         panel.appendChild(bottom);
 
-        // STATUS LABEL
-        const progressLabel = document.createElement("div");
-        progressLabel.id = "progressLabel";
-        progressLabel.textContent = "Loading...";
-        progressLabel.style.zIndex = "1";
-        progressLabel.style.fontSize = "24px";
-        progressLabel.style.fontWeight = "700";
-        progressLabel.style.color = "#ffffff";
-        progressLabel.style.marginBottom = "18px";
-        progressLabel.style.letterSpacing = "1px";
-        bottom.appendChild(progressLabel);
-
         // PROGRESS BACKGROUND
         const progressBarContainer = document.createElement("div");
         progressBarContainer.style.width = "1080px";
@@ -300,6 +307,18 @@ function trigger() {
         progressBarContainer.style.border = "1px solid rgba(255,255,255,0.05)";
         bottom.appendChild(progressBarContainer);
 
+        // STATUS LABEL
+        const progressLabel = document.createElement("div");
+        progressLabel.id = "progressLabel";
+        progressLabel.textContent = "Loading...";
+        progressLabel.style.zIndex = "1";
+        progressLabel.style.fontSize = "24px";
+        progressLabel.style.fontWeight = "700";
+        progressLabel.style.color = "#ffffff";
+        progressLabel.style.marginBottom = "18px";
+        progressLabel.style.letterSpacing = "1px";
+        bottom.appendChild(progressLabel);
+        
         // PROGRESS BAR
         const progressBar = document.createElement("div");
         progressBar.id = "progressBar";
@@ -324,29 +343,21 @@ function trigger() {
         document.body.appendChild(autoloader_ui);
     };
 
-    window.updateProgress = function(percent, message = "Loading...") {
+    window.updateProgress = function(percent, message= "Loading...") {
         const progressBar = document.getElementById("progressBar");
         if (progressBar) {
-            progressBar.style.transform =
-                'scaleX(' + percent / 100 + ')';
+            progressBar.style.transform = 'scaleX(' + percent/100 + ')';
         }
         const progressLabel = document.getElementById("progressLabel");
         if (progressLabel) {
-            progressLabel.textContent =
-                message;
+            progressLabel.textContent = message;
         }
         window.uiLog(message, "warning");
     };
 
-    window.uiLog = function(message, type = "info") {
-        if (
-            typeof message === 'string' &&
-            (message.includes("[ERROR]") ||
-             message.includes("[-]"))
-        ) {
-            if (typeof window.hideUI === 'function') {
-                window.hideUI();
-            }
+    window.uiLog = function(message, type="info") {
+        if (typeof message === 'string' && (message.includes("[ERROR]") || message.includes("[-]"))) {
+            if (typeof window.hideUI === 'function') window.hideUI();
         }
         const logContainer = document.getElementById("logContainer");
         if (logContainer) {
@@ -358,34 +369,25 @@ function trigger() {
             logEntry.style.border = "1px solid rgba(255,255,255,0.05)";
             logEntry.style.background = "rgba(255,255,255,0.03)";
             if (type === "error") {
-                logEntry.style.color =
-                    "#ff4a4a";
+                logEntry.style.color = "#ff4a4a";
             }
             else if (type === "success") {
-                logEntry.style.color =
-                    "#74ff9b";
+                logEntry.style.color = "#74ff9b";
             }
             else if (type === "warning") {
-                logEntry.style.color =
-                    "#ffd85a";
+                logEntry.style.color = "#ffd85a";
             }
             else {
-                logEntry.style.color =
-                    "#d0d0d0";
+                logEntry.style.color = "#d0d0d0";
             }
             logEntry.textContent = message;
             logContainer.appendChild(logEntry);
             if (logContainer.childElementCount > 20) {
-
-                logContainer.removeChild(
-                    logContainer.firstChild
-                );
+                logContainer.removeChild(logContainer.firstChild);
             }
-
             const logWrapper = document.getElementById("logWrapper");
             if (logWrapper) {
-                logWrapper.scrollTop =
-                    logWrapper.scrollHeight;
+                logWrapper.scrollTop = logWrapper.scrollHeight;
             }
         }
     };
@@ -402,7 +404,7 @@ function trigger() {
         if (typeof window.autoloader_ui === 'function') {
             window.autoloader_ui();
             window.uiLog("Y2X " + autoloader_version + " by LZ", "success");
-            window.updateProgress(0, "Running Y2JB Exploit...");
+            window.updateProgress(0, "Y2JB Started...");
         }
         await log('Starting Exploit');
         
@@ -1207,38 +1209,36 @@ function trigger() {
         // MAIN EXECUTION //
         ////////////////////
 
+        await load_localscript('update.js');
+        await load_localscript('icon_update.js');
         await load_localscript('autoload.js');
-
         if (typeof window.updateProgress === 'function') {
             window.updateProgress(20, "Running Kernel Exploit...");
         }
 
         if (is_jailbroken()) {
-            await log('Already Jailbroken!');
+            await log('Already jailbroken!');
             send_notification("Already Jailbroken!");
-            send_notification("Enjoy Freedom From Sony!");
-            await kill_youtube(500);
 
+            await load_localscript('remotejsloader.js');
         } else if (compare_version(FW_VERSION, "12.70") > 0) {
             await log("Unsupported fw " + FW_VERSION);
             send_notification("Unsupported fw " + FW_VERSION);
 
             return;
-
         } else if (compare_version(FW_VERSION, "10.01") > 0) {
             await log('Exploit starting in 3 seconds...');
             nanosleep(3 * 1_000_000_000);
 
             await load_localscript('p2jb.js');
         } else {
-            await log('Exploit Starting in 3 Seconds...');
+            await log('Exploit starting in 3 seconds...');
             nanosleep(3 * 1_000_000_000);
 
             await load_localscript('lapse.js');
         }
 
-        await load_localscript('update.js');
-        await load_localscript('icon_update.js');
+        // WAIT FOR JB SUCCESS
         await start_update();
         await start_icon_update();
         await start_autoload();
@@ -1246,14 +1246,14 @@ function trigger() {
         if (typeof window.updateProgress === 'function') {
             window.updateProgress(100, "Autoload Finished.");
         }
-          send_notification("Enjoy Freedom From Sony!");
-          await kill_youtube(500);
+
+        send_notification("Enjoy Freedom From Sony!");
 
     } catch (e) {                
         if (typeof window.hideUI === 'function') window.hideUI();
         await log('EXCEPTION: ' + e.message);
         await log(e.stack);
-        await kill_youtube();
+
     }
     
 })();

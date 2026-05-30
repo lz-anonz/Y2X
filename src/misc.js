@@ -536,24 +536,10 @@ function find_file(filename) {
     return null;
 }
 
-async function kill_youtube() {
-    try {
-        check_jailbroken();
-        
-        const killyoutube_download0_path = find_file("kill_youtube.elf");
-        if (!killyoutube_download0_path) {
-            throw new Error("\"kill_youtube.elf\" not found!");
-        }
-        
-        const file_data = await read_file(killyoutube_download0_path);
-        if (!file_data) {
-            throw new Error("Failed to read file");
-        }
-        
-        await send_network("127.0.0.1", 9021, SOCK_STREAM, file_data);
-    } catch (e) {
-        await log("ERROR in kill_youtube: " + e.message);
-    }
+async function kill_youtube(delay_ms = 5000) {
+    await new Promise(resolve => setTimeout(resolve, delay_ms));
+    const pid = syscall(SYSCALL.getpid);
+    syscall(SYSCALL.kill, pid, SIGKILL);
 }
 
 

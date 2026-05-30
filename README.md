@@ -4,17 +4,19 @@
 
 ## Overview
 
-**Y2eXploit (Y2X)** is an autoloader designed to simplify and organize payload execution within the Y2JB ecosystem.
+**Y2eXploit (Y2X)** is an autoloader with a clean ui designed to simplify and organize payload execution for Y2JB.
 
-It provides a structured workflow for chaining and managing exploit-stage payloads including **P2JB + Lapse integration**.
+This particular fork of Y2JB is capable of autoloading **P2JB + Lapse + BDJ_Unpatch**, autoupdating the Y2JB files from the usb with Y2JB_Updater, Autoloading Payload Manager, and it will Autoclose the YT App after it is finished loading.
 
 ---
 
 ## Features
 
 - Y2JB Autoloader/Updater Included  
-- Support for **Lapse Kernel Exploit**
-- Support for **P2JB Kernel Exploit**  
+- Autorun P2JB/Lapse/BDJ_Unpatch Exploit
+- Autoupdate Y2JB Files (From USB)
+- Autoload Payload Manager
+- Autoclose YT App after finish
 
 ---
 
@@ -26,8 +28,21 @@ It provides a structured workflow for chaining and managing exploit-stage payloa
 
 ## Installation
 
-### Download from Releases
+### Retail
+(I advise you to create a backup of your current PS5 before moving forward.)
+- Download the backup file from [Releases Page](https://github.com/lz-anonz/Y2X/releases)
+- Install it to an empty usb formatted to exFat
+- Backup and Restore from USB
+- Open the Y2JB app
+- Wait ~50 Minutes
+- Enjoy Freedom From Sony!
 
+### Already Jailbroken
+- Download the download0 file from [Releases Page](https://github.com/lz-anonz/Y2X/releases)
+- Use a payload sender to load an ftpserver
+- Open an FTP Manager like Filezilla and connect to the PS5 using (HOST:YOUR LOCAL PS5 IP ADDRESS & PORT:2121)
+- Go to "user/download/PPSA01650/" on Filezilla
+- Overwrite the download0 file with the one you downloaded here
 ---
 
 ## Project Purpose
