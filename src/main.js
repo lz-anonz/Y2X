@@ -1237,10 +1237,10 @@ function trigger() {
         }
 
         // WAIT FOR JB SUCCESS
-        //await load_localscript('update.js');
+        await load_localscript('update.js');
         await load_localscript('icon_update.js');
         await load_localscript('autoload.js');
-        //await start_update();
+        await start_update();
         await start_icon_update();
         await start_autoload();
 
