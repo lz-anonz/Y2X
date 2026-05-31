@@ -6,14 +6,14 @@
 
 **Y2eXploit (Y2X)** is an autoloader with a clean ui designed to simplify and organize payload execution for Y2JB.
 
-This particular fork of Y2JB is capable of autoloading **P2JB + Lapse + BDJ_Unpatch**, autoupdating the Y2JB files from the usb with Y2JB_Updater, Autoloading Payload Manager, and it will Autoclose the YT App after it is finished loading.
+This particular fork of Y2JB is capable of autoloading **P2JB + Lapse**, autoupdating the Y2JB files from the usb with Y2JB_Updater, Autoloading Payload Manager, and it will Autoclose the YT App after it is finished loading.
 
 ---
 
 ## Features
 
 - Y2JB Autoloader/Updater Included  
-- Autorun P2JB/Lapse/BDJ_Unpatch Exploit
+- Autorun P2JB/Lapse Exploit
 - Autoupdate Y2JB Files (From USB)
 - Autoload Payload Manager
 - Autoclose YT App after finish
@@ -22,7 +22,7 @@ This particular fork of Y2JB is capable of autoloading **P2JB + Lapse + BDJ_Unpa
 
 ## Screenshots
 
-![Main UI](screenshots/main.jpg)
+![Main UI](screenshots/main.png)
 
 ---
 
