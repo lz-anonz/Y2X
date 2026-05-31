@@ -15,7 +15,7 @@
 
 (async function () {
     try {
-        const p2jb_version = "P2JB 2.6 (Y2JB port) + bdj_unpatch";
+        const p2jb_version = "P2JB 2.6 (Y2JB port)";
 
         const PAGE_SIZE = 0x4000;
 
@@ -2273,27 +2273,6 @@
             }
         }
 
-        async function stage_bdj_unpatch() {
-            if (!is_jailbroken()) {
-                fail("elfldr is not running!");
-            }
-
-            const payload_name = "bdj_unpatch_1320_v2.elf";
-            const payload_path = find_file(payload_name);
-
-            if (!payload_path) {
-                fail("\"" + payload_name + "\" not found!");
-            }
-
-            const file_data = await read_file(payload_path);
-            if (!file_data) {
-                fail("Failed to read \"" + payload_name + "\"");
-            }
-
-            await send_network("127.0.0.1", 9021, SOCK_STREAM, file_data);
-            await ulog("\"" + payload_name + "\" sent to elfldr successfully");
-        }
-
         send_notification(p2jb_version + "\nport by matem6");
 
         {
@@ -2314,10 +2293,10 @@
         }
 
         try {
-            // if (typeof is_jailbroken === "function" && is_jailbroken()) {
-            //     send_notification("p2jb: already jailbroken");
-            //     return;
-            // }
+            //if (typeof is_jailbroken === "function" && is_jailbroken()) {
+            //    send_notification("p2jb: already jailbroken");
+            //    return;
+            //}
             failcheck_path = "/" + get_nidpath() + "/common_temp/p2jb.fail";
             if (file_exists(failcheck_path) ||
                 file_exists("/user/temp/common_temp/p2jb.fail")) {
@@ -2395,7 +2374,6 @@
         } else {
             await stage_load_elf_via_sandbox(S);
         }
-        await stage_bdj_unpatch();
 
         try {
             const B = S.proc_ucred;
@@ -2511,13 +2489,10 @@
         pin_to_core(S.orig_main_core);
         await ulog("restored main thread to core " + S.orig_main_core);
 
-        await ulog("=== p2jb + bdj_unpatch complete ===");
+        await ulog("=== p2jb complete ===");
 
     } catch (e) {
         try { await log("p2jb FATAL: " + e.message); } catch (_) { }
         try { send_notification("p2jb FAILED: " + e.message); } catch (_) { }
     }
-})();`;
-
-    await eval(js_code);
 })();

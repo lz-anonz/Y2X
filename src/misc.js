@@ -472,6 +472,13 @@ function nanosleep(nsec) {
     syscall(SYSCALL.nanosleep, timespec);
 }
 
+
+async function kill_youtube(delay_ms = 5000) {
+    await new Promise(resolve => setTimeout(resolve, delay_ms));
+    const pid = syscall(SYSCALL.getpid);
+    syscall(SYSCALL.kill, pid, SIGKILL);
+}
+
 async function send_network(ip_address, port, sock_type, buffer) {
     const sockaddr_in = malloc(16);
     const buf_ptr = malloc(buffer.length);
@@ -521,27 +528,6 @@ async function send_network(ip_address, port, sock_type, buffer) {
     
     syscall(SYSCALL.close, sock_fd);
 }
-
-function find_file(filename) {
-    const search = [
-        "/mnt/sandbox/" + TITLE_ID + "_000/download0/cache/splash_screen/aHR0cHM6Ly93d3cueW91dHViZS5jb20vdHY=/" + filename,
-        "/mnt/sandbox/" + TITLE_ID + "_001/download0/cache/splash_screen/aHR0cHM6Ly93d3cueW91dHViZS5jb20vdHY=/" + filename,
-        "/mnt/sandbox/" + TITLE_ID + "_002/download0/cache/splash_screen/aHR0cHM6Ly93d3cueW91dHViZS5jb20vdHY=/" + filename,
-    ];
-    for (const path of search) {
-        if (file_exists(path)) {
-            return path;
-        }
-    }
-    return null;
-}
-
-async function kill_youtube(delay_ms = 5000) {
-    await new Promise(resolve => setTimeout(resolve, delay_ms));
-    const pid = syscall(SYSCALL.getpid);
-    syscall(SYSCALL.kill, pid, SIGKILL);
-}
-
 
 function compare_version(a, b) {
     const [amaj, amin] = a.split('.').map(Number);

@@ -27,7 +27,7 @@ async function load_localscript(src) {
 
 let NETWORK_LOGGING = false;
 // Use setlogserver.js payload to change server url at runtime
-let LOG_SERVER = 'http://192.168.2.9:8080/log';
+let LOG_SERVER = 'http://10.0.0.210:8080/log';
 
 let _log_socket_fd = null;
 let _log_socket_buf = null;
@@ -103,8 +103,7 @@ async function log(msg) {
             });
         } catch (e) { }
     }
-
-    if (_log_socket_fd !== null && typeof syscall !== 'undefined') {
+        if (_log_socket_fd !== null && typeof syscall !== 'undefined') {
         try {
             if (!_log_socket_buf) {
                 _log_socket_buf = malloc(_LOG_SOCKET_MAXLEN);
@@ -400,12 +399,13 @@ function trigger() {
     };
 
     try {
-        await log(version_string);
         if (typeof window.autoloader_ui === 'function') {
             window.autoloader_ui();
             window.uiLog("Y2X " + autoloader_version + " by LZ", "success");
             window.updateProgress(0, "Y2JB Started...");
+
         }
+        await log(version_string);
         await log('Starting Exploit');
         
         await gc();
@@ -1168,7 +1168,8 @@ function trigger() {
                 if (lowerText.includes("[error]") || lowerText.includes("[-]") || 
                     lowerText.includes("error") || lowerText.includes("failed") || 
                     lowerText.includes("exception") || lowerText.includes("lapse") || 
-                    lowerText.includes("jailbroken") || lowerText.includes("exploit")) {
+                    lowerText.includes("p2jb") || lowerText.includes("jailbroken") || 
+                    lowerText.includes("exploit")) {
                     isSystemNotify = true;
                 }
             }
@@ -1209,16 +1210,16 @@ function trigger() {
         // MAIN EXECUTION //
         ////////////////////
 
-        await load_localscript('update.js');
-        await load_localscript('icon_update.js');
-        await load_localscript('autoload.js');
+       // await load_localscript('update.js');
+       // await load_localscript('icon_update.js');
+       // await load_localscript('autoload.js');
         if (typeof window.updateProgress === 'function') {
-            window.updateProgress(20, "Running Kernel Exploit...");
+            window.updateProgress(20, "Running kernel exploit...");
         }
 
         if (is_jailbroken()) {
             await log('Already jailbroken!');
-            send_notification("Already Jailbroken!");
+            send_notification("Already jailbroken!");
 
             await load_localscript('remotejsloader.js');
         } else if (compare_version(FW_VERSION, "12.70") > 0) {
@@ -1238,13 +1239,17 @@ function trigger() {
             await load_localscript('lapse.js');
         }
 
+        if (typeof window.updateProgress === 'function') {
+            window.updateProgress(50, "Kernel exploit finished.");
+        }
+
         // WAIT FOR JB SUCCESS
-        await start_update();
-        await start_icon_update();
-        await start_autoload();
+        // await start_update();
+        // await start_icon_update();
+        // await start_autoload();
 
         if (typeof window.updateProgress === 'function') {
-            window.updateProgress(100, "Autoload Finished.");
+            window.updateProgress(100, "Autoload finished.");
         }
 
         send_notification("Enjoy Freedom From Sony!");
