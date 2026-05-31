@@ -1,8 +1,8 @@
+<h1 align="center">Y2eXploit (Y2X)</h1>
 <p align="center">
  <img src="./src/icon0.png" width="128" />
 </p>
-<h1 align="center">Y2eXploit (Y2X)</h1>
-<h2 align="center">PS5 Y2JB Autoloader</h2>
+<h2 align="center">"PS5 Y2JB Autoloader"</h2>
 <h3 align="center">Fork of <a href="https://github.com/Gezine/Y2JB">Y2JB</a></h3>
 &nbsp;
 <p align="center">Automatically loads the kernel exploit, elf_loader, your elf payloads, and .js scripts.<br>Supports PS5 firmwares 4.03-12.40</p>
