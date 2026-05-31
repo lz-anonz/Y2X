@@ -1251,6 +1251,7 @@ function trigger() {
         if (typeof window.updateProgress === 'function') {
             window.updateProgress(100, "Autoloader Finished, Enjoy Freedom From Sony :)");
         }
+        await kill_youtube(500);
 
     } catch (e) {                
         if (typeof window.hideUI === 'function') window.hideUI();
