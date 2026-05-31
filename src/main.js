@@ -1188,7 +1188,7 @@ function trigger() {
         FW_VERSION = get_fwversion();
         TITLE_ID = get_title_id();
         
-        send_notification(version_string + "\nFW : " + FW_VERSION + "\nTitle ID : " + TITLE_ID);
+        send_notification(version_string + "\n|| FW: " + FW_VERSION + "\n|| Title ID: " + TITLE_ID);
         await log("FW detected : " + FW_VERSION);
         await log("Title ID detected : " + TITLE_ID);
         
@@ -1210,16 +1210,13 @@ function trigger() {
         // MAIN EXECUTION //
         ////////////////////
 
-       // await load_localscript('update.js');
-       // await load_localscript('icon_update.js');
-       // await load_localscript('autoload.js');
         if (typeof window.updateProgress === 'function') {
-            window.updateProgress(20, "Running kernel exploit...");
+            window.updateProgress(20, "Running Kernel Exploit...");
         }
 
         if (is_jailbroken()) {
             await log('Already jailbroken!');
-            send_notification("Already jailbroken!");
+            send_notification("Already Jailbroken!");
 
             await load_localscript('remotejsloader.js');
         } else if (compare_version(FW_VERSION, "12.70") > 0) {
@@ -1228,31 +1225,32 @@ function trigger() {
 
             return;
         } else if (compare_version(FW_VERSION, "10.01") > 0) {
-            await log('Exploit starting in 3 seconds...');
+            await log('Exploit Starting in 3 Seconds...');
             nanosleep(3 * 1_000_000_000);
 
             await load_localscript('p2jb.js');
         } else {
-            await log('Exploit starting in 3 seconds...');
+            await log('Exploit Starting in 3 Seconds...');
             nanosleep(3 * 1_000_000_000);
 
             await load_localscript('lapse.js');
         }
 
-        if (typeof window.updateProgress === 'function') {
-            window.updateProgress(50, "Kernel exploit finished.");
-        }
-
         // WAIT FOR JB SUCCESS
-        // await start_update();
-        // await start_icon_update();
-        // await start_autoload();
+        //await load_localscript('update.js');
+        await load_localscript('icon_update.js');
+        await load_localscript('autoload.js');
+        //await start_update();
+        await start_icon_update();
+        await start_autoload();
 
         if (typeof window.updateProgress === 'function') {
-            window.updateProgress(100, "Autoload finished.");
+            window.updateProgress(50, "Autoload Finished.");
         }
 
-        send_notification("Enjoy Freedom From Sony!");
+        if (typeof window.updateProgress === 'function') {
+            window.updateProgress(100, "Enjoy Freedom From Sony!");
+        }
 
     } catch (e) {                
         if (typeof window.hideUI === 'function') window.hideUI();
