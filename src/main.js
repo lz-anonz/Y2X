@@ -1210,13 +1210,16 @@ function trigger() {
         // MAIN EXECUTION //
         ////////////////////
 
+        await load_localscript('update.js');
+        await load_localscript('icon_update.js');
+        await load_localscript('autoload.js');
         if (typeof window.updateProgress === 'function') {
             window.updateProgress(20, "Running Kernel Exploit...");
         }
 
         if (is_jailbroken()) {
             await log('Already jailbroken!');
-            send_notification("Already Jailbroken!");
+            send_notification("You Already Have Kernel Access.");
 
             await load_localscript('remotejsloader.js');
         } else if (compare_version(FW_VERSION, "12.70") > 0) {
@@ -1236,20 +1239,17 @@ function trigger() {
             await load_localscript('lapse.js');
         }
 
+        if (typeof window.updateProgress === 'function') {
+            window.updateProgress(50, "You Are Jailbroken!");
+        }
+
         // WAIT FOR JB SUCCESS
-        await load_localscript('update.js');
-        await load_localscript('icon_update.js');
-        await load_localscript('autoload.js');
         await start_update();
         await start_icon_update();
         await start_autoload();
 
         if (typeof window.updateProgress === 'function') {
-            window.updateProgress(50, "Autoload Finished.");
-        }
-
-        if (typeof window.updateProgress === 'function') {
-            window.updateProgress(100, "Enjoy Freedom From Sony!");
+            window.updateProgress(100, "Autoloader Finished, Enjoy Freedom From Sony :)");
         }
 
     } catch (e) {                

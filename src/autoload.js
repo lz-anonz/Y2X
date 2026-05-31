@@ -339,7 +339,7 @@ async function start_autoload() {
       }
     }
   } else {
-    log("No autoload config found in any location");
+    log("No ELF Autoload Config Found in Any Location.");
     send_notification("No autoload config found in any location");
   }
 
