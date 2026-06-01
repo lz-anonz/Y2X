@@ -13,9 +13,7 @@
  * Usage: see README.md.
  */
 
-(async function () {
-    const js_code = String.raw`
-(async function () {
+async function start_p2jb() {
     try {
         const p2jb_version = "P2JB 2.6 (Y2JB port)";
 
@@ -2536,7 +2534,4 @@
         try { await log("p2jb FATAL: " + e.message); } catch (_) { }
         try { send_notification("p2jb FAILED: " + e.message); } catch (_) { }
     }
-})();`;
-
-    await eval(js_code);
-})();
+}

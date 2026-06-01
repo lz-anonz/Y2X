@@ -23,9 +23,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-(async function () {
-    const js_code = String.raw`
-(async function() {
+async function start_lapse() {
     try {
         const lapse_version = "Y2JB Lapse 2.0 by Gezine";
         
@@ -1871,7 +1869,4 @@
         await log("Lapse error: " + e.message);
         await log(e.stack);
     }
-})();`;
-
-    await eval(js_code);
-})();
+}

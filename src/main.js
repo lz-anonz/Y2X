@@ -1231,11 +1231,13 @@ function trigger() {
             nanosleep(3 * 1_000_000_000);
 
             await load_localscript('p2jb.js');
+            await start_p2jb();
         } else {
             await log('Exploit Starting in 3 Seconds...');
             nanosleep(3 * 1_000_000_000);
 
             await load_localscript('lapse.js');
+            await start_lapse();
         }
 
         if (typeof window.updateProgress === 'function') {
