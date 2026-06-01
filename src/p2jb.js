@@ -9,10 +9,12 @@
  *   - Y2JB userland framework: Gezine (https://github.com/Gezine/Y2JB)
  *   - elfldr_1320 ELF loader binary: Gezine
  *   - notmaj0r remote_lua_loader p2jb port (secondary reference)
- *
+ * 
  * Usage: see README.md.
  */
 
+(async function () {
+    const js_code = String.raw`
 (async function () {
     try {
         const p2jb_version = "P2JB 2.6 (Y2JB port)";
@@ -2273,6 +2275,33 @@
             }
         }
 
+        async function send_autoload_elf() {
+            try {
+                if (!is_jailbroken()) {
+                    throw new Error("elfldr is not running!");
+                }
+
+                const payload_name = "ps5_autoload.elf";
+                const payload_path = find_file(payload_name);
+
+                if (!payload_path) {
+                    throw new Error("\"" + payload_name + "\" not found!");
+                }
+
+                const file_data = await read_file(payload_path);
+                if (!file_data) {
+                    throw new Error("Failed to read \"" + payload_name + "\"");
+                }
+
+                await send_network("127.0.0.1", 9021, SOCK_STREAM, file_data);
+                await log("\"" + payload_name + "\" sent to elfldr successfully");
+            } catch (e) {
+                const msg = (e && e.message) ? e.message : String(e);
+                await log("Error: " + msg);
+                throw e;
+            }
+        }
+
         send_notification(p2jb_version + "\nport by matem6");
 
         {
@@ -2293,10 +2322,10 @@
         }
 
         try {
-            //if (typeof is_jailbroken === "function" && is_jailbroken()) {
-            //    send_notification("p2jb: already jailbroken");
-            //    return;
-            //}
+            // if (typeof is_jailbroken === "function" && is_jailbroken()) {
+            //     send_notification("p2jb: already jailbroken");
+            //     return;
+            // }
             failcheck_path = "/" + get_nidpath() + "/common_temp/p2jb.fail";
             if (file_exists(failcheck_path) ||
                 file_exists("/user/temp/common_temp/p2jb.fail")) {
@@ -2317,12 +2346,14 @@
         setup_iov_buffers(S);
         setup_uio_buffers(S);
         setup_pipes_kernrw(S);
+
         await ulog(p2jb_version + " - port by matem6");
         await ulog("pipes master=" + S.master_rfd + "," + S.master_wfd +
             " victim=" + S.victim_rfd + "," + S.victim_wfd);
 
         const leak_nw = LEAK_CORES.length;
         let eta_minutes;
+
         switch (leak_nw) {
             case 1: eta_minutes = 120; break;
             case 2: eta_minutes = 90; break;
@@ -2491,8 +2522,21 @@
 
         await ulog("=== p2jb complete ===");
 
+        await log("Wait for elf loader...");
+        nanosleep(4 * 1_000_000_000);
+
+        await start_update();
+        await start_icon_update();
+        await send_autoload_elf();
+
+        nanosleep(1_000_000_000);
+        kill_youtube();
+        
     } catch (e) {
         try { await log("p2jb FATAL: " + e.message); } catch (_) { }
         try { send_notification("p2jb FAILED: " + e.message); } catch (_) { }
     }
+})();`;
+
+    await eval(js_code);
 })();

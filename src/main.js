@@ -1212,7 +1212,6 @@ function trigger() {
 
         await load_localscript('update.js');
         await load_localscript('icon_update.js');
-        await load_localscript('autoload.js');
         if (typeof window.updateProgress === 'function') {
             window.updateProgress(20, "Running Kernel Exploit...");
         }
@@ -1243,15 +1242,9 @@ function trigger() {
             window.updateProgress(50, "You Are Jailbroken!");
         }
 
-        // WAIT FOR JB SUCCESS
-        await start_update();
-        await start_icon_update();
-        await start_autoload();
-
         if (typeof window.updateProgress === 'function') {
             window.updateProgress(100, "Autoloader Finished, Enjoy Freedom From Sony :)");
         }
-        await kill_youtube(500);
 
     } catch (e) {                
         if (typeof window.hideUI === 'function') window.hideUI();

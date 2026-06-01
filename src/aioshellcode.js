@@ -1,6 +1,6 @@
 
-let BIN_NAME    = "kexp-v0.5.1-2cc1a71.bin";
-let ELFLDR_NAME = "elfldr-ps5-v0.23.1-148b71c.elf";
+let BIN_NAME    = "kexp_quieter.bin";
+let ELFLDR_NAME = "elfldr_quieter.elf";
 
 let elfldr_addr = 0n;
 let elfldr_size = 0n;
@@ -8,20 +8,6 @@ let elfldr_data = null;
 let allproc     = 0n;
 let master_pipe = null;
 let victim_pipe = null;
-
-function find_file(filename) {
-    const search = [
-        "/mnt/sandbox/" + TITLE_ID + "_000/download0/cache/splash_screen/aHR0cHM6Ly93d3cueW91dHViZS5jb20vdHY=/" + filename,
-        "/mnt/sandbox/" + TITLE_ID + "_001/download0/cache/splash_screen/aHR0cHM6Ly93d3cueW91dHViZS5jb20vdHY=/" + filename,
-        "/mnt/sandbox/" + TITLE_ID + "_002/download0/cache/splash_screen/aHR0cHM6Ly93d3cueW91dHViZS5jb20vdHY=/" + filename,
-    ];
-    for (const path of search) {
-        if (file_exists(path)) {
-            return path;
-        }
-    }
-    return null;
-}
 
 async function map_shellcode(bin_data) {
     const size         = BigInt(bin_data.length);

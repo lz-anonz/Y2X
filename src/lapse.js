@@ -23,7 +23,9 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-async function start_lapse() {
+(async function () {
+    const js_code = String.raw`
+(async function() {
     try {
         const lapse_version = "Y2JB Lapse 2.0 by Gezine";
         
@@ -131,12 +133,6 @@ async function start_lapse() {
         let longjmp_addr = 0n;
         let saved_fpu_ctrl = 0;
         let saved_mxcsr = 0;
-
-        function compare_version(a, b) {
-            const [amaj, amin] = a.split('.').map(Number);
-            const [bmaj, bmin] = b.split('.').map(Number);
-            return amaj === bmaj ? amin - bmin : amaj - bmaj;
-        }
 
         function wait_for(addr, threshold) {
             while (read64(addr) !== threshold) {
@@ -1548,7 +1544,7 @@ async function start_lapse() {
                     }
                     p = kernel.read_qword(p);
                 }
-                throw new Error(`failed to find proc with pid ${pid}`);
+                throw new Error("failed to find proc with pid " + pid);
             }
             
             function get_rootvnode() {
@@ -1697,11 +1693,39 @@ async function start_lapse() {
             }
         }
 
+        async function send_autoload_elf() {
+            try {
+                if (!is_jailbroken()) {
+                    throw new Error("elfldr is not running!");
+                }
+
+                const payload_name = "ps5_autoload.elf";
+                const payload_path = find_file(payload_name);
+
+                if (!payload_path) {
+                    throw new Error("\"" + payload_name + "\" not found!");
+                }
+
+                const file_data = await read_file(payload_path);
+                if (!file_data) {
+                    throw new Error("Failed to read \"" + payload_name + "\"");
+                }
+
+                await send_network("127.0.0.1", 9021, SOCK_STREAM, file_data);
+                await log("\"" + payload_name + "\" sent to elfldr successfully");
+            } catch (e) {
+                const msg = (e && e.message) ? e.message : String(e);
+                await log("Error: " + msg);
+                throw e;
+            }
+        }
+
         ////////////////////
         // MAIN EXECUTION //
         ////////////////////
         
         await log(lapse_version);
+        send_notification(lapse_version);
         
         if(typeof load_aioshellcode === "undefined") {
             await log("Update Y2JB to at least 1.5 version");
@@ -1825,7 +1849,17 @@ async function start_lapse() {
             await cleanup();
             
             await log("Lapse finished");
+            send_notification("Lapse finished");
+
+            await log("Wait for elf loader...");
+            nanosleep(4 * 1_000_000_000);
             
+            await start_update();
+            await start_icon_update();
+            await send_autoload_elf();
+
+            kill_youtube();
+
         } catch (e) {
             await log("Lapse error: " + e.message);
             await log(e.stack);
@@ -1837,4 +1871,7 @@ async function start_lapse() {
         await log("Lapse error: " + e.message);
         await log(e.stack);
     }
-}
+})();`;
+
+    await eval(js_code);
+})();
