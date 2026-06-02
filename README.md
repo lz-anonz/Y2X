@@ -26,6 +26,7 @@ In "v1 Y2X" you can safely add KSTUFF to the autoload folder, as it will wait un
 
 ### DON'T ADD KSTUFF IN THE PS5_AUTOLOADER FOLDER IN V2!
 - YOU CAN NOT AUTOLOAD KSTUFF BEFORE CLOSING THE YT APP, IT WILL KP!
+
 In "v2 Y2X" it will only autoload Payload Manager & FTP Server before closing the YT App because it will read from the "/mnt/sandbox/" folder.
 If you attempt to add KSTUFF to this and rebuild it then that will cause Kernel Panic, so please do not add KSTUFF to the autoloader.
 To avoid any issues just autoload KSTUFF from the Payload Manager for safety.
