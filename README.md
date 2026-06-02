@@ -25,7 +25,7 @@ This particular fork of Y2JB is capable of autoloading **P2JB + Lapse**, autoupd
 ### DON'T ADD KSTUFF IN THE PS5_AUTOLOADER FOLDER!
 - YOU CAN NOT AUTOLOAD KSTUFF BEFORE CLOSING THE YT APP, IT WILL KP!
 
-In "v1 Y2X" you can safely add KSTUFF to the autoload folder as it will wait until YT is closed before autoloading any payloads.
+In "v1 Y2X" you can safely add KSTUFF to the autoload folder, as it will wait until YT is closed before autoloading any payloads.
 
 In "v2 Y2X" it will only autoload Payload Manager & FTP Server before closing the YT App because it will read from the "/mnt/sandbox/" folder.
 If you attempt to add KSTUFF to this and rebuild it then that will cause Kernel Panic, so please do not add KSTUFF to the autoloader.
