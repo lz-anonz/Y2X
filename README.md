@@ -23,6 +23,7 @@ This particular fork of Y2JB is capable of autoloading **P2JB + Lapse**, autoupd
 
 ## IMPORTANT
 In "v1 Y2X" you can safely add KSTUFF to the autoload folder, as it will wait until YT is closed before autoloading any payloads.
+- (Do Not Change The 5 Second Delay in the autoload.txt - "!5000" - it is there for stability)
 
 ### DON'T ADD KSTUFF IN THE PS5_AUTOLOADER FOLDER IN V2!
 In "v2 Y2X" it will only autoload Payload Manager & FTP Server before closing the YT App because it will read from the "/mnt/sandbox/" folder.
@@ -39,7 +40,6 @@ To avoid any issues just autoload KSTUFF from the Payload Manager for safety.
 - Autoupdate Y2JB Files (From USB)
 - Autoload Any ELF Files You Want (From USB)
 - Autoclose YT App After Finish
-(Do Not Change The 5 Second Delay in the autoload.txt - "!5000" - it is there for stability)
 
 
 ##### v2 Y2X - P2JB/Lapse + Autoload PLDMGR & FTPSRV
