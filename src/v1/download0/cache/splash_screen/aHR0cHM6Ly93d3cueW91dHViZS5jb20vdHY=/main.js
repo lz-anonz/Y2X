@@ -1218,7 +1218,7 @@ function trigger() {
 
         if (is_jailbroken()) {
             await log('Already jailbroken!');
-            send_notification("You Already Have Kernel Access.");
+            send_notification("You Have Kernel Access.");
 
             await load_localscript('remotejsloader.js');
         } else if (compare_version(FW_VERSION, "12.70") > 0) {
