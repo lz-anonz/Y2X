@@ -46,7 +46,6 @@ To avoid any issues just autoload KSTUFF from the Payload Manager for safety.
 - Autorun P2JB/Lapse Exploit
 - Autoupdate Y2JB Files (From USB)
 - Autoload Only Payload Manager & FTP Server Automatically
-- You Can Also Autoload Any ELF Files You Want (From USB or /data/)
 - Autoclose YT App After Finish
 
 
