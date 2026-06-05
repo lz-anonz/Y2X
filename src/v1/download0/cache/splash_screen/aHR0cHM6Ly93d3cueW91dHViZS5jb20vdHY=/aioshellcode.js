@@ -1,5 +1,5 @@
 
-let BIN_NAME    = "kexp_quieter.bin";
+let BIN_NAME    = "kexp-v0.6-c3d0fd9.bin";
 let ELFLDR_NAME = "elfldr_quieter.elf";
 
 let elfldr_addr = 0n;
@@ -8,6 +8,20 @@ let elfldr_data = null;
 let allproc     = 0n;
 let master_pipe = null;
 let victim_pipe = null;
+
+function find_file(filename) {
+    const search = [
+        "/mnt/sandbox/" + TITLE_ID + "_000/download0/cache/splash_screen/aHR0cHM6Ly93d3cueW91dHViZS5jb20vdHY=/" + filename,
+        "/mnt/sandbox/" + TITLE_ID + "_001/download0/cache/splash_screen/aHR0cHM6Ly93d3cueW91dHViZS5jb20vdHY=/" + filename,
+        "/mnt/sandbox/" + TITLE_ID + "_002/download0/cache/splash_screen/aHR0cHM6Ly93d3cueW91dHViZS5jb20vdHY=/" + filename,
+    ];
+    for (const path of search) {
+        if (file_exists(path)) {
+            return path;
+        }
+    }
+    return null;
+}
 
 async function map_shellcode(bin_data) {
     const size         = BigInt(bin_data.length);
@@ -72,7 +86,7 @@ async function load_elfldr() {
     write_buffer(elfldr_addr, elfldr_data);
     elfldr_size = BigInt(elfldr_data.length);
 
-    await log("elfldr @ " + toHex(elfldr_addr) + " size: 0x" + elfldr_size.toString(16));
+    await log("elfldr (" + ELFLDR_NAME + ") @ " + toHex(elfldr_addr) + " size: 0x" + elfldr_size.toString(16));
 }
 
 async function load_bin() {
@@ -82,7 +96,7 @@ async function load_bin() {
     }
 
     const bin_data = read_file(path);
-    await log("Bin size: " + bin_data.length + " (0x" + bin_data.length.toString(16) + ")");
+    await log("Bin size: " + bin_data.length + " (0x" + bin_data.length.toString(16) + ") from " + BIN_NAME);
 
     const entry_addr = await map_shellcode(bin_data);
     await run_shellcode(entry_addr);
@@ -101,4 +115,3 @@ async function load_aioshellcode(arg_allproc, arg_master_pipe, arg_victim_pipe) 
     await load_elfldr();
     await load_bin();
 }
-

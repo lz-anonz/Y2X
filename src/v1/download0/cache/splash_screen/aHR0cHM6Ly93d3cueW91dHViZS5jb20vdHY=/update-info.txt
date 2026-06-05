@@ -2,5 +2,5 @@ autoload.js|12466
 icon0.png|15236
 icon_update.js|5238
 ps5_autoloader/autoload.txt|864
-ps5_autoloader/pldmgr-v0.1.1.elf|2033936
+ps5_autoloader/pldmgr_v0.3.0.elf|2050320
 update.js|62872
