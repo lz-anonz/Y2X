@@ -1,4 +1,4 @@
-<h1 align="center">Y2eXploit (Y2X)</h1>
+<h1 align="center">$${\color{red}Y2eXploit (Y2X)}$$</h1>
 <p align="center">
  <img src="./screenshots/icon0.png" width="128" />
 </p>
@@ -24,16 +24,35 @@ This particular fork of Y2JB is capable of autoloading **P2JB + Lapse**, autoupd
 ## IMPORTANT
 ### IF YOU ARE UNSURE WHICH VERSION TO DOWNLOAD JUST USE "v1" AND FOLLOW INSTRUCTIONS
 
-#### v1 Y2X
-In "v1 Y2X" you can safely add KSTUFF to the autoload folder, as it will wait until YT is closed before autoloading any payloads.
-- (Do Not Change The 5 Second Delay in the autoload.txt - "!5000" - it is there for stability)
+#### **v1 Y2X**
+> [!IMPORTANT]
+>  (Do Not Change The 5 Second Delay in the autoload.txt - "!5000" - it is there for stability)
 
-#### v2 Y2X
-##### DON'T ADD KSTUFF IN THE PS5_AUTOLOADER FOLDER IN V2!
+In "v1 Y2X" you can safely add KSTUFF to the autoload folder, as it will wait until YT is closed before autoloading any payloads.
+
+---
+
+#### **v2 Y2X**
+> [!IMPORTANT]
+>  DON'T ADD KSTUFF IN THE PS5_AUTOLOADER FOLDER IN V2!
+>  YOU CAN NOT AUTOLOAD KSTUFF BEFORE CLOSING THE YT APP, IT WILL KP!
+
 In "v2 Y2X" it will only autoload Payload Manager & FTP Server before closing the YT App because it will read from the "/mnt/sandbox/" folder.
 If you attempt to add KSTUFF to this and rebuild it then that will cause Kernel Panic, so please do not add KSTUFF to the autoloader.
 To avoid any issues just autoload KSTUFF from the Payload Manager for safety.
-- YOU CAN NOT AUTOLOAD KSTUFF BEFORE CLOSING THE YT APP, IT WILL KP!
+
+
+---
+
+### My Advice
+I would highly advise you strictly only autoload the very bare minimum when using the ps5_autoloader in either version.
+For the best stability keep the autoloader exactly like below, and use the payload manager to load the rest of your payloads.
+
+> [!TIP]
+>  !5000
+>  pldmgr-v0.3.0.elf
+>  !1000
+>  ftpsrv-ps5.elf
 
 ---
 
