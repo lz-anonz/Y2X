@@ -1,4 +1,4 @@
 !5000
-pldmgr-v0.3.0.elf
+pldmgr_v0.3.1.elf
 !1000
 ftpsrv-ps5.elf
