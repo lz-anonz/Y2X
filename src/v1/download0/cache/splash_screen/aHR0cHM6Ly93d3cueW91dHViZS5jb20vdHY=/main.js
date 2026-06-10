@@ -330,6 +330,16 @@ function trigger() {
         progressBar.style.boxShadow = "0 0 25px rgba(255,0,85,0.5)";
         progressBarContainer.appendChild(progressBar);
 
+        // TIMER LABEL
+        const progressTimer = document.createElement("div");
+        progressTimer.id = "progressTimer";
+        progressTimer.textContent = "Approximately ~0 minutes remaining... (0%)";
+        progressTimer.style.fontSize = "20px";
+        progressTimer.style.color = "#777";
+        progressTimer.style.textAlign = "center";
+        progressTimer.style.marginTop = "12px";
+        bottom.appendChild(progressTimer);
+
         // FOOTER
         const footer = document.createElement("div");
         footer.textContent = "Y2X • MADE BY: LZ";
@@ -354,7 +364,43 @@ function trigger() {
         }
         window.uiLog(message, "warning");
     };
-
+    
+    window.startProgressTimer = function(total_minutes) {
+        let elapsed = 0;
+    
+        function updateTimer() {
+            const percent = Math.min(
+                99,
+                Math.round((elapsed / total_minutes) * 100)
+            );
+        
+            const timer = document.getElementById("progressTimer");
+        
+            if (timer) {
+                if (elapsed >= total_minutes) {
+                    timer.textContent =
+                        "Still loading, please wait... (99%)";
+                } else {
+                    const remaining = total_minutes - elapsed;
+                
+                    timer.textContent =
+                        "Approximately ~" +
+                        remaining +
+                        " minutes remaining... (" +
+                        percent +
+                        "%)";
+                }
+            }
+        }
+    
+        updateTimer();
+    
+        window.progressTimerInterval = setInterval(() => {
+            elapsed++;
+            updateTimer();
+        }, 60000);
+    };
+    
     window.uiLog = function(message, type="info") {
         if (typeof message === 'string' && (message.includes("[ERROR]") || message.includes("[-]"))) {
             if (typeof window.hideUI === 'function') window.hideUI();
@@ -404,7 +450,7 @@ function trigger() {
             window.autoloader_ui();
             window.uiLog("Y2X " + autoloader_version + " by LZ", "success");
             window.updateProgress(0, "Y2JB Started...");
-
+            window.startProgressTimer(50);
         }
         await log(version_string);
         await log('Starting Exploit');
