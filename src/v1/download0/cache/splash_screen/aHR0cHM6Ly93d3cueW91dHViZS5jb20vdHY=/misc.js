@@ -522,6 +522,143 @@ async function send_network(ip_address, port, sock_type, buffer) {
     syscall(SYSCALL.close, sock_fd);
 }
 
+function kill_progress_overlay() {
+    if (window.progressOverlayInterval) {
+        clearInterval(window.progressOverlayInterval);
+        window.progressOverlayInterval = null;
+    }
+    const el = document.getElementById("progress_overlay");
+    if (el) {
+        el.parentNode.removeChild(el);
+    }
+    if (window.uiLog && window.uiLog._isWrapped) {
+        window.uiLog = window.uiLog._original;
+    }
+    if (window.log && window.log._isWrapped) {
+        window.log = window.log._original;
+    }
+}
+
+function start_progress_overlay(total_minutes) {
+    kill_progress_overlay();
+
+    const baseWidth = 1920;
+    const scale = window.innerWidth / baseWidth;
+
+    const overlay = document.createElement("div");
+    overlay.id = "progress_overlay";
+    overlay.style.position = "fixed";
+    overlay.style.top = "0px";
+    overlay.style.left = "0px";
+    overlay.style.width = "100%";
+    overlay.style.height = "100%";
+    overlay.style.backgroundColor = "#000000";
+    overlay.style.zIndex = "100000";
+    overlay.style.color = "#888888";
+    overlay.style.fontFamily = "monospace, Arial, sans-serif";
+    overlay.style.userSelect = "none";
+
+    const scaleContainer = document.createElement("div");
+    scaleContainer.id = "progress_scale_container";
+    scaleContainer.style.position = "absolute";
+    scaleContainer.style.top = "0px";
+    scaleContainer.style.left = "0px";
+    scaleContainer.style.width = "1920px";
+    scaleContainer.style.height = "1080px";
+    scaleContainer.style.transform = "scale(" + scale + ")";
+    scaleContainer.style.transformOrigin = "top left";
+    overlay.appendChild(scaleContainer);
+
+    const contentBox = document.createElement("div");
+    contentBox.id = "progress_box";
+    contentBox.style.position = "absolute";
+    contentBox.style.padding = "20px";
+    contentBox.style.backgroundColor = "#000000";
+    scaleContainer.appendChild(contentBox);
+
+    const title = document.createElement("div");
+    title.textContent = "Kernel Exploit in progress...";
+    title.style.fontSize = "28px";
+    title.style.fontWeight = "bold";
+    title.style.marginBottom = "15px";
+    contentBox.appendChild(title);
+
+    const progressBarContainer = document.createElement("div");
+    progressBarContainer.style.width = "500px";
+    progressBarContainer.style.height = "20px";
+    progressBarContainer.style.backgroundColor = "#111111";
+    progressBarContainer.style.border = "1px solid #444444";
+    progressBarContainer.style.marginBottom = "15px";
+    contentBox.appendChild(progressBarContainer);
+
+    const progressBar = document.createElement("div");
+    progressBar.style.width = "0%";
+    progressBar.style.height = "100%";
+    progressBar.style.backgroundColor = "#555555";
+    progressBarContainer.appendChild(progressBar);
+
+    const statusText = document.createElement("div");
+    statusText.style.fontSize = "20px";
+    contentBox.appendChild(statusText);
+
+    let elapsed = 0;
+
+    function randomize_position() {
+        const topVal = Math.floor(Math.random() * 50) + 20;
+        const leftVal = Math.floor(Math.random() * 50) + 15;
+        contentBox.style.top = topVal + "%";
+        contentBox.style.left = leftVal + "%";
+    }
+
+    function update_display() {
+        const percent = Math.min(99, Math.round((elapsed / total_minutes) * 100));
+        progressBar.style.width = percent + "%";
+        
+        if (elapsed >= total_minutes) {
+            statusText.textContent = "Still loading, please wait... (99%)";
+        } else {
+            const remaining = total_minutes - elapsed;
+            statusText.textContent = "Approximately ~" + remaining + " minutes remaining... (" + percent + "%)";
+        }
+        
+        randomize_position();
+    }
+
+    randomize_position();
+    update_display();
+
+    window.progressOverlayInterval = setInterval(() => {
+        elapsed++;
+        update_display();
+    }, 60000);
+
+    const orig_uiLog = window.uiLog;
+    const orig_log = window.log;
+
+    const wrapped_uiLog = function(...args) {
+        kill_progress_overlay();
+        if (typeof orig_uiLog === "function") {
+            return orig_uiLog.apply(this, args);
+        }
+    };
+    wrapped_uiLog._isWrapped = true;
+    wrapped_uiLog._original = orig_uiLog;
+
+    const wrapped_log = function(...args) {
+        kill_progress_overlay();
+        if (typeof orig_log === "function") {
+            return orig_log.apply(this, args);
+        }
+    };
+    wrapped_log._isWrapped = true;
+    wrapped_log._original = orig_log;
+
+    window.uiLog = wrapped_uiLog;
+    window.log = wrapped_log;
+
+    document.body.appendChild(overlay);
+}
+
 function find_file(filename) {
     const search = [
         "/mnt/sandbox/" + TITLE_ID + "_000/download0/cache/splash_screen/aHR0cHM6Ly93d3cueW91dHViZS5jb20vdHY=/" + filename,
@@ -535,6 +672,7 @@ function find_file(filename) {
     }
     return null;
 }
+
 
 async function kill_youtube() {
     try {

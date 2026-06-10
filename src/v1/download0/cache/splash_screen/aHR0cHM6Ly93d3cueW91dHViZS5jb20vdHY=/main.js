@@ -5,13 +5,13 @@
     of the MIT license.  See the LICENSE file for details.
 */
 
-const version_string = "Y2JB 1.5 by Gezine";
+const version_string = "Y2JB 1.6 by Gezine";
 
-const autoloader_version = "v1.2.0";
+const autoloader_version = "v1.3.0";
 
 
 
-async function load_localscript(src) {
+function load_localscript(src) {
     return new Promise((resolve, reject) => {
         const script = document.createElement('script');
         script.src = src;
@@ -103,6 +103,7 @@ async function log(msg) {
             });
         } catch (e) { }
     }
+
     if (_log_socket_fd !== null && typeof syscall !== 'undefined') {
         try {
             if (!_log_socket_buf) {
@@ -968,7 +969,7 @@ function trigger() {
             await log("libc_base @ " + toHex(libc_base));
             
         } else if (text_leak_mask == 0xFDFn) {
-            Y2_VERSION = "01.000.030 (min fw 12.02)";
+            Y2_VERSION = "01.000.030 (min fw 12.20)";
             await log("Youtube " + Y2_VERSION + " detected");
             Y2_OFFSET = Y2_OFFSET_1220;
             ROP = ROP_1220;
