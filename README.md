@@ -76,7 +76,7 @@ For the best stability keep the autoloader exactly like below, and use the paylo
 
 ## Installation
 
-### Retail
+### Retail (NOT READY)
 (I advise you to create a backup of your current PS5 before moving forward.)
 - Download the backup file from [Releases Page](https://github.com/lz-anonz/Y2X/releases)
 - Install it to an empty usb formatted to exFat
